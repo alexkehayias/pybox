@@ -1,0 +1,11 @@
+[package]
+name = "pybox2"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0"
+serde_json = "1.0"
+wasmtime = "41"
+wasmtime-wasi = "41"
+wasmtime-wasi-io = "41"
