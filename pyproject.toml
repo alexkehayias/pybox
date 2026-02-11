@@ -1,8 +1,13 @@
 [project]
-name = "pybox2"
+name = "pybox"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.13"
 dependencies = [
     "componentize-py>=0.19.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
 ]

@@ -1160,7 +1160,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "pybox2"
+name = "pybox"
 version = "0.1.0"
 dependencies = [
  "anyhow",
