@@ -49,7 +49,11 @@ impl PySandbox {
         let timeout_seconds = timeout_secs.unwrap_or(DEFAULT_TIMEOUT_SECONDS);
 
         let mut cfg = Config::new();
+        // Enable timeouts
         cfg.epoch_interruption(true);
+        // Enable the compilation cache, using the default cache configuration
+        // settings.
+        cfg.cache(Some(Cache::from_file(None)?));
         let engine = Engine::new(&cfg).expect("Failed to create wasm engine");
 
         let component = Component::from_file(&engine, "sandbox.wasm")
@@ -69,6 +73,7 @@ impl PySandbox {
     ///
     /// # Arguments
     /// * `timeout_secs` - Optional timeout in seconds. Defaults to `DEFAULT_TIMEOUT_SECONDS`.
+    #[allow(dead_code)]
     pub fn new_for_test(timeout_secs: Option<u64>) -> Result<Self> {
         let timeout_seconds = timeout_secs.unwrap_or(DEFAULT_TIMEOUT_SECONDS);
 
