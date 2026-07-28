@@ -126,3 +126,17 @@ a + b
     // Second result should fail because it references undefined vars
     assert!(result2.is_err());
 }
+
+#[test]
+fn test_exec_with_print_does_not_trap() {
+    if !has_sandbox_wasm() {
+        return;
+    }
+
+    let mut sandbox = PySandbox::new_for_test(None).expect("Failed to create sandbox");
+    // print() goes through WASI stdio. With --stub-wasi removed from the build,
+    // this should not trap; it should write to stdout and return normally.
+    let result = sandbox.exec("print('hello from print')\n42");
+    assert!(result.is_ok(), "print() trapped: {:?}", result);
+    assert_eq!(result.unwrap(), "42");
+}
