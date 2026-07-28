@@ -10,7 +10,6 @@ def main():
         "componentize-py",
         "-d", "sandbox.wit",
         "componentize",
-        "--stub-wasi",
         "guest",
         "-o", "sandbox.wasm"
     ]
