@@ -50,13 +50,17 @@ class TestHandleFunction:
         e = ValueError("test error message")
         result = handle(e)
         assert isinstance(result, Err)
-        assert str(result) == "ValueError: test error message"
+        # handle() now formats using traceback.format_exception, which includes
+        # a "Traceback" header line followed by the exception type + message.
+        assert "ValueError: test error message" in str(result)
 
     def test_handle_exception_without_message(self):
         e = ValueError("")
         result = handle(e)
         assert isinstance(result, Err)
-        assert str(result) == "ValueError"
+        # When the message is empty, Python omits the ": " separator and shows
+        # just the exception type name.
+        assert "ValueError" in str(result)
 
     def test_handle_syntax_error(self):
         e = SyntaxError("invalid syntax")
