@@ -10,6 +10,10 @@ First build the python wasm component:
 uv run build_component.py
 ```
 
+This produces `sandbox.wasm`, which is embedded into the binary at compile
+time via `include_bytes!`. It must exist before running `cargo build` or
+`cargo install`; a fresh checkout cannot compile until this step is done.
+
 Run some python code and get back the value of the last expression:
 
 ```
@@ -28,6 +32,23 @@ Install `pybox` locally using `cargo`:
 ```
 cargo install --path .
 ```
+
+## Sandbox guarantees
+
+Guest code runs in a WASM component with no ambient capabilities:
+
+- No filesystem, environment variables, network, subprocesses, or `ctypes`.
+- No access to the host's stdin/stdout/stderr. Guest stdin is empty (reads see
+  EOF), and guest stdout/stderr are captured into bounded buffers and returned
+  as separate fields (`ExecResult { value, stdout, stderr }`).
+- Bounded memory (512 MiB) and captured output (1 MiB per stream).
+- Wall-clock timeout via epoch interruption, enforced by a single background
+  ticker per engine.
+- The `sandbox.wasm` component is embedded in the binary, so no executable code
+  is loaded from the working directory.
+
+The CLI writes guest stdout/stderr to the host's stderr and only the result
+value to the host's stdout.
 
 ## Micro-benchmarks
 

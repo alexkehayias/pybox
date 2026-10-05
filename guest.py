@@ -87,7 +87,7 @@ class WitWorld(wit_world.WitWorld):
             # Python's tokenizer (it raises IndentationError at module level).
             program = compile(textwrap.dedent(code), "<input>", "eval")
             return json.dumps(eval(program))
-        except Exception as e:
+        except BaseException as e:
             raise handle(e)
 
     def exec(self, code: str) -> str:
@@ -116,5 +116,5 @@ class WitWorld(wit_world.WitWorld):
             exec(compiled, namespace, namespace)
 
             return json.dumps(namespace.get(_RESULT_NAME))
-        except Exception as e:
+        except BaseException as e:
             raise handle(e)

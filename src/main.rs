@@ -24,7 +24,17 @@ fn main() -> Result<()> {
     let mut sandbox = sandbox::PySandbox::new(None)?;
 
     match sandbox.exec(&code) {
-        Ok(result) => println!("{}", result),
+        Ok(result) => {
+            // Guest stdout/stderr are untrusted side-channel output. Route them
+            // to the host's stderr so the host's stdout carries only the result.
+            if !result.stdout.is_empty() {
+                eprint!("{}", result.stdout);
+            }
+            if !result.stderr.is_empty() {
+                eprint!("{}", result.stderr);
+            }
+            println!("{}", result.value);
+        }
         Err(e) => {
             eprintln!("Error: {}", e);
             std::process::exit(-1);
