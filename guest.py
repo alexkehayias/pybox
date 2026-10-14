@@ -6,6 +6,55 @@ import linecache
 import textwrap
 import traceback
 
+# Stdlib surface bundled for guest code. componentize-py only includes modules
+# reachable from this module's import graph, so every module guest code may use
+# must be imported here, before the component is built.
+import re
+import math
+import collections
+import itertools
+import functools
+import random
+import io
+import os
+import sys
+import contextlib
+import copy
+import enum
+import dataclasses
+import pprint
+import operator
+import graphlib
+import heapq
+import bisect
+import string
+import typing
+import csv
+import tomllib
+import html
+import unicodedata
+import difflib
+import fnmatch
+import urllib.parse
+import xml.etree.ElementTree
+import datetime
+import calendar
+import time
+import decimal
+import fractions
+import statistics
+import ipaddress
+import base64
+import hashlib
+import hmac
+import uuid
+import zlib
+import gzip
+import struct
+import array
+import secrets
+import pathlib
+
 # Hidden variable name used to capture the value of the last top-level
 # expression in exec mode so we can return it like eval does.
 _RESULT_NAME = "__pybox_result"
