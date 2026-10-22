@@ -1,10 +1,11 @@
-use anyhow::{anyhow, Context, Result};
+use anyhow::{anyhow, Result};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread::{self, JoinHandle};
 use std::time::Duration;
 
 use wasmtime::component::{Component, Linker};
+use wasmtime::error::Context;
 use wasmtime::{Cache, Config, Engine, Store, StoreLimits, StoreLimitsBuilder, Strategy};
 use wasmtime_wasi::p2::pipe::{MemoryInputPipe, MemoryOutputPipe};
 use wasmtime_wasi::{ResourceTable, WasiCtx, WasiCtxBuilder, WasiCtxView};
@@ -181,7 +182,7 @@ impl PySandbox {
         store.set_epoch_deadline(deadline);
         store.epoch_deadline_callback(|mut ctx| {
             ctx.data_mut().timed_out = true;
-            anyhow::bail!("execution timed out")
+            wasmtime::bail!("execution timed out")
         });
 
         // Set up linker with WASI
